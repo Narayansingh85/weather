@@ -6,16 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Get weather data from OpenWeatherMap API
       const apiKey = '2118af449c5f4d2489631c4c7d82cee3';
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}` 
-      //`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
       try {
         const response = await fetch(apiUrl);
         const data = await response.json();
 
+        const kelvinTemp = data.main.temp;
+        const celsiusTemp = (kelvinTemp - 273.15).toFixed(2);
+
         // Update HTML elements with weather data
         document.getElementById('location').innerText = `Weather in ${data.name}, ${data.sys.country}`;
-        document.getElementById('temperature').innerText = `${data.main.temp}°C`;
+        document.getElementById('temperature').innerText = `${celsiusTemp}°C`;
         document.getElementById('description').innerText = data.weather[0].description;
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -29,6 +31,3 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('location').innerText = 'Geolocation is not supported by your browser.';
   }
 });
-
-
-
